@@ -1,0 +1,7 @@
+szó: {=1} , start:  0 hossz:  4
+elemzeslistahossz: 1
+elemzések: {=1} , start:  4 hossz: 0
+{=1} elemzések: nincs elemzés
+
+
+szó: 

@@ -1,0 +1,9 @@
+eclipse.preferences.version=1
+encoding//data/read2.py=utf-8
+encoding//server/src/annotation.py=utf-8
+encoding//server/src/common.py=utf-8
+encoding//server/src/dispatch.py=utf-8
+encoding//server/src/document.py=utf-8
+encoding//server/src/newaction.py=utf-8
+encoding//server/src/projectconfig.py=utf-8
+encoding//server/src/session.py=utf-8

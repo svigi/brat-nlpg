@@ -1,0 +1,24 @@
+T1	Entity 0 5	Teszt
+T2	saját 57 67	dolor stb.
+E1	saját:T2 
+T3	Entity 45 50	Lorem
+T4	Ujentity 72 80	hosszabb
+T5	szöveg 51 56	ipsum
+E2	szöveg:T5 
+T6	új 0 5	Teszt
+E3	új:T6 
+T7	egyik 8 10	öv
+E4	egyik:T7 
+T8	másik 6 12	szöveg
+E5	másik:T8 
+T9	asdf 81 88	szöveg.
+E6	asdf:T9 
+#1	AnnotatorNotes E6	jegyzetem
+T10	harmadik 31 36	másik
+E7	harmadik:T10 
+T11	akármi 6 12	szöveg
+E8	akármi:T11 
+T12	Entity 37 43	mondat
+T13	Entity 24 26	Ez
+T14	újj 68 71	Még
+E9	újj:T14 

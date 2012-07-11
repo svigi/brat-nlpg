@@ -1,0 +1,9 @@
+# Don't ever commit your settings
+config.py
+
+#/data/*
+/work/*
+
+# Python remenants
+*.pyc
+*.pyo
