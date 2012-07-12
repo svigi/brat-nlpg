@@ -35,7 +35,7 @@ from predict import suggest_span_types
 from undo import undo
 from tag import tag
 from delete import delete_document, delete_collection
-from newaction import get_entities
+from newaction import get_entities, set_entities
 
 # no-op function that can be invoked by client to log a user action
 def logging_no_op(collection, document, log):
@@ -47,6 +47,7 @@ def logging_no_op(collection, document, log):
 DISPATCHER = {
 
         'getEntities': get_entities,
+        'setEntities': set_entities,
 
         'getCollectionInformation': get_directory_information,
         'getDocument': get_document,

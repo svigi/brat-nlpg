@@ -1,4 +1,5 @@
 eclipse.preferences.version=1
+encoding//data/convertlist.py=utf-8
 encoding//data/read2.py=utf-8
 encoding//server/src/annotation.py=utf-8
 encoding//server/src/common.py=utf-8

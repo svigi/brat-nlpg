@@ -1,7 +1,8 @@
 # Don't ever commit your settings
 config.py
 
-#/data/*
+/.settings/*
+/data/*
 /work/*
 
 # Python remenants

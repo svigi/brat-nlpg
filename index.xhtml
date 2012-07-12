@@ -479,17 +479,6 @@
       </fieldset>
     </form>
     <form id="span_form" class="dialog" title="Span">
-	  <fieldset id="testcontainer">
-	  	<div id="testdiv">
-	  		<legend>Test legend</legend>
-	  		<input id="testbutton" class="smaller-buttons" type="button" value="érték"/>
-	  	</div>
-	  	<div id="testdiv2">
-	  		<legend>Testing</legend>
-	  		<div id="testcontainer2"></div>
-	  	</div>
-	  	
-	  </fieldset>
       <fieldset id="span_selected_fset">
         <legend>Text</legend>
         <a target="brat_linked" id="span_highlight_link" href="#">Link</a>
@@ -500,7 +489,20 @@
         <legend>Search</legend>
         <div id="span_search_links"/>
       </fieldset>
-
+	  <fieldset id="testcontainer">
+	  	<div id="testdiv">
+	  		<legend>Word forms</legend>
+	  		<!-- <input id="testbutton" class="smaller-buttons" type="button" value="érték"/>
+	  			-->
+	  			<div id="testcontainer2"></div>
+	  		
+	  	</div>
+	  	<!--<div id="testdiv2">
+	  		<legend>Testing</legend>
+	  		
+	  	</div>
+	  -->
+	  </fieldset>
       <fieldset id="entity_and_event_wrapper_fieldset" style="display: none;">
         <div id="entity_and_event_wrapper" class="split_wrapper">
           <div id="span_entity_section" class="wrapper_half_left">
@@ -529,19 +531,18 @@
           </div>
         </div>
       </fieldset>
-
+      
+      
       <input type="checkbox" name="otherentity_toggler" id="otherentity_toggler" value="checked"/>
       <label for="otherentity_toggler">Other...</label>
       <fieldset id="otherentity_container">
-      	<!-- TODO: kattintásnál váltogassa az Other entity containert -->
-      	<!-- TODO: értelmesebb helyre áthelyezni -->
-      		
         
         <div id="otherentity">
-        	<legend>Other entity name</legend>
+        	<legend>Enter other word form:</legend>
           <input id="span_otherentity" class="borderless"/>
         </div>
       </fieldset>
+
       <fieldset>
         <legend>Notes</legend>
         <div id="notes_container">
