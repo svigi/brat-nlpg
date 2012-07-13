@@ -13,7 +13,7 @@ from annotation import open_textfile
 from common import ProtocolError
 from config import DATA_DIR
 from document import real_directory
-from annotation import JOINED_ANN_FILE_SUFF, TEXT_FILE_SUFFIX
+from annotation import JOINED_ANN_FILE_SUFF, TEXT_FILE_SUFFIX, DATA_FILE_SUFFIX
 from os.path import join as join_path
 from os.path import isdir, isfile
 from os import access, W_OK
@@ -85,6 +85,7 @@ def save_import(title, text, docid, collection=None):
     base_path = join_path(dir_path, docid)
     txt_path = base_path + '.' + TEXT_FILE_SUFFIX
     ann_path = base_path + '.' + JOINED_ANN_FILE_SUFF
+    dat_path = base_path + '.' + DATA_FILE_SUFFIX
 
     # Before we proceed, verify that we are not overwriting
     for path in (txt_path, ann_path):
@@ -101,6 +102,10 @@ def save_import(title, text, docid, collection=None):
 
     # Touch the ann file so that we can edit the file later
     with open(ann_path, 'w') as _:
+        pass
+
+    # Touch the dat file so that we can edit the file later
+    with open(dat_path, 'w') as _:
         pass
 
     return { 'document': docid }

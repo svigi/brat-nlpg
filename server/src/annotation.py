@@ -33,6 +33,7 @@ JOINED_ANN_FILE_SUFF = 'ann'
 # since they depend on multiple files for completeness
 PARTIAL_ANN_FILE_SUFF = ['a1', 'a2', 'co', 'rel']
 KNOWN_FILE_SUFF = [JOINED_ANN_FILE_SUFF]+PARTIAL_ANN_FILE_SUFF
+DATA_FILE_SUFFIX = 'dat'
 TEXT_FILE_SUFFIX = 'txt'
 ###
 

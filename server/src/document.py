@@ -716,8 +716,10 @@ def _enrich_json_with_data(j_dic, ann_obj):
     # Attach the source files for the annotations and text
     from os.path import splitext
     from annotation import TEXT_FILE_SUFFIX
+    from annotation import DATA_FILE_SUFFIX
     ann_files = [splitext(p)[1][1:] for p in ann_obj._input_files]
     ann_files.append(TEXT_FILE_SUFFIX)
+    ann_files.append(DATA_FILE_SUFFIX)
     ann_files = [p for p in set(ann_files)]
     ann_files.sort()
     j_dic['source_files'] = ann_files
