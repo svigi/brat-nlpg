@@ -2,10 +2,13 @@
 # -*- Mode: Python; tab-width: 4; indent-tabs-mode: nil; coding: utf-8; -*-
 # vim:set ft=python ts=4 sw=4 sts=4 autoindent:
 
+
 import codecs
 import re
 import string
 import sys
+
+# Functions and classes
 
 def collection_str(collection):
     if isinstance(collection, list):
@@ -28,6 +31,20 @@ class Szoelemzes(object):
         self.elemzes = elemzes
         
 
+
+def check_id_token(token):
+    checkpattern = r'({=[^}]+})'
+    matcher = re.match(checkpattern, token, 0)
+    if (matcher == None):
+        print "Ez a token nem ID:", token
+        return False
+    
+    print "ID-t találtam:", token
+    return True
+
+
+# Main program
+
 counter = 1
 #print len(sys.argv)
 #exit(2)
@@ -39,20 +56,28 @@ if (len(sys.argv) == 3):
 else:
     exit(2)
 
-f = codecs.open('szemeszet.dat', 'r', 'utf8')
+f = codecs.open('szemeszetnemid.dat', 'r', 'utf8')
 print "startpos", startpos
 print "endpos", endpos
 
 #line = f.readline()
 lista = []
+tokencounter = 0
 
 for line in f:
     #sor végi LF karaktert ne számoljuk!
+    tokencounter = 0
     counter -= 1
     linesplit = line.split(' ')
     pattern = r'^([^{|]+)(.+)'
 
     for token in linesplit:
+        if (tokencounter == 0):
+            tokencounter += 1
+            if (check_id_token(token)):
+                continue
+        
+        #tokencounter += 1
         szo = re.sub(pattern, r'\1', token)
         elemzesek = re.sub(pattern, r'\2', token)
 
@@ -141,5 +166,5 @@ for line in f:
 
 f.close()
 
-print collection_str(lista)
-
+print lista
+#print collection_str(lista)

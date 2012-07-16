@@ -58,6 +58,21 @@ class Wordentity(object):
         self.word = word
         self.order = order
 
+
+def check_id_token(token):
+    checkpattern = r'({=[^}]+})'
+    matcher = re.match(checkpattern, token, 0)
+    if (matcher == None):
+        log_info('Ez a token nem ID:')
+        log_info(token)
+        return False
+    
+    log_info('ID-t találtam:')
+    log_info(token)
+    return True
+
+
+
 def encode_list(lista):
     outstr = ''
     for idx in range(len(lista)):
@@ -98,15 +113,25 @@ def save_list_to_file(start, end, docname, lista):
     log_info('file opened for writing')
 
     counter = int(1)
+    tokencounter = 0
     
     for line in file_in:
+        tokencounter = 0
         counter -= 1
         linesplit = line.split(' ')
         pattern = r'^([^{|]+)(.+)'
     
         for idx in range(len(linesplit)):
-            line_out = ''
             token = linesplit[idx]
+            if (tokencounter == 0):
+                tokencounter += 1
+                if (check_id_token(token)):
+                    #csak átmásoljuk az ID-t + szeparátort teszünk mögé
+                    file_out.write(token + separator)
+                    continue
+                
+            line_out = ''
+            
             szo = re.sub(pattern, r'\1', token)
             elemzesek = re.sub(pattern, r'\2', token)
             elemzesek = string.replace(elemzesek, '{{', '')
@@ -184,7 +209,7 @@ def save_list_to_file(start, end, docname, lista):
 
         
 def read_list_from_file(start, end, docname):
-    
+#OK    
     #startpos = int(start)
     #endpos = int(end)
     
@@ -205,9 +230,11 @@ def read_list_from_file(start, end, docname):
     f = codecs.open(utvonal, 'r', 'utf8')
     log_info('file opened')
     lista = []
+    tokencounter = 0
 
     counter = int(1)
     for line in f:
+        tokencounter = 0
         #log_info('sor olvasva')
         #sor végi LF karaktert ne számoljuk!
         counter -= 1
@@ -215,6 +242,14 @@ def read_list_from_file(start, end, docname):
         pattern = r'^([^{|]+)(.+)'
     
         for token in linesplit:
+            #log_info('counter: {0}'.format(counter))
+            
+            #log_info('tokencounter: {0}'.format(tokencounter))
+            if (tokencounter == 0):
+                tokencounter += 1
+                if (check_id_token(token)):
+                    continue
+            
             szo = re.sub(pattern, r'\1', token)
             elemzesek = re.sub(pattern, r'\2', token)
     
@@ -232,13 +267,14 @@ def read_list_from_file(start, end, docname):
             #print "ellenorzes"
             szohossz = len(szo)
             endpos2 = counter + szohossz
+            #log_info('startpos {0}, endpos {1}, counters {2} {3}'.format(startpos, endpos, counter, endpos2))
             #print "startpos", startpos, "endpos", endpos, "counters", counter, endpos2
             #if (counter == startpos):
             
             
             if (counter == startpos and endpos2 == endpos):
-               #print "megvan!!!"
-               #print "szó string:", szo, ", szó start:", counter, ", szó vége:" , counter + len(szo), ", szó hossza:", len(szo)
+               #log_info('megvan!!!')
+               #log_info('szó string:', szo, ', szó start:', counter, ', szó vége:' , counter + len(szo), ', szó hossza:', len(szo))
                #if (len(elemzeslista) != 1):
                    #print "elemzés string:", elemzesek, ", start: ", counter, "hossz: ", len(elemzesek)
                #else:
@@ -256,10 +292,10 @@ def read_list_from_file(start, end, docname):
                    for elemzes in elemzeslista:
                        #print elemzes,
                        lista.append(elemzes)
-                       log_info(elemzes)
+                       #log_info(elemzes)
                else:
                        lista.append(szo)
-                       log_info(szo)
+                       #log_info(szo)
                    #print "elemzéslista: üres"
                #print ""
     
@@ -280,8 +316,8 @@ def read_list_from_file(start, end, docname):
     if (len(lista)==0):
         if (szo != '\n'):
             lista.append(szo)
-            log_info('nincs elemzés')
-            log_info(szo)
+            #log_info('nincs elemzés')
+            #log_info(szo)
 
     return lista
 
@@ -295,17 +331,17 @@ def get_entities(start, end, docname):
     return response
 
 def set_entities(start, end, docname, words):
-    log_info('set_entities start')
+    #log_info('set_entities start')
     lista = json.JSONDecoder().decode(words)
-    log_info('lista_len')
-    log_info(len(lista))
+    #log_info('lista_len')
+    #log_info(len(lista))
     response = {}
     #lista = []
     #lista.append('egyik')
     #lista.append('másik')
     response['test'] = 'Választ kaptam a szervertől'
     save_list_to_file(start, end, docname, lista)
-    log_info('saved')
+    #log_info('saved')
     return response
     
 def get_entitiesold(start, end):
