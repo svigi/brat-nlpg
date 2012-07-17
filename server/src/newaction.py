@@ -11,6 +11,7 @@ Author:     Balázs Svigruha	<svigruha.balazs@hallgato.ppke.hu>
 Version:    2012-07-09
 '''
 from config import DATA_DIR
+#helyi teszteléshez
 #DATA_DIR = '/home/sviba/brat/brat-v1.2_The_Larch/data/'
 
 from logging import info as log_info
@@ -37,6 +38,7 @@ import re
 import string
 import unicodedata
 
+separator = ' '
 
 def collection_str(collection):
     if isinstance(collection, list):
@@ -63,12 +65,12 @@ def check_id_token(token):
     checkpattern = r'({=[^}]+})'
     matcher = re.match(checkpattern, token, 0)
     if (matcher == None):
-        log_info('Ez a token nem ID:')
-        log_info(token)
+        #log_info('Ez a token nem ID:')
+        #log_info(token)
         return False
     
-    log_info('ID-t találtam:')
-    log_info(token)
+    #log_info('ID-t találtam:')
+    #log_info(token)
     return True
 
 
@@ -90,38 +92,52 @@ def encode_entity(szo, lista):
     return outstr
 
 def save_list_to_file(start, end, docname, lista):
-    separator = ' '
     response = {}
     startpos = int(start)
     endpos = int(end)
     szo = ''
     line_out = ''
-    log_info(type(startpos))
-    log_info(startpos)
-    log_info(type(endpos))
-    log_info(endpos)
+    #log_info(type(startpos))
+    #log_info(startpos)
+    #log_info(type(endpos))
+    #log_info(endpos)
     utvonal = path_join(DATA_DIR, docname + '.dat')
     utvonaluj = path_join(DATA_DIR, docname + '.tmp')
     
     
-    log_info('opening file: ' + utvonal)
+    #log_info('opening file: ' + utvonal)
     file_in = codecs.open(utvonal, 'r', 'utf8')
-    log_info('file opened')
+    #log_info('file opened')
 
-    log_info('opening file: ' + utvonaluj)
+    #log_info('opening file: ' + utvonaluj)
     file_out = codecs.open(utvonaluj, 'w', 'utf8')
-    log_info('file opened for writing')
+    #log_info('file opened for writing')
 
     counter = int(1)
     tokencounter = 0
     
     for line in file_in:
+        #teljessor = line[0:5]
+        #teljessor2 = line[len(line)-5:len(line)-1]
+        
+        #sys.stdout.write('Sor dump: {0}|{1}|{2}|{3}|\n'.format(teljessor.encode('utf8').encode('hex'),teljessor2.encode('utf8').encode('hex'), teljessor, teljessor2))
+        #sys.stdout.write('Sor dump vége\n')
+        vanspaceavegen = 0
+        utolsokarakter = line[len(line)-2].encode('utf8').encode('hex')
+        if (utolsokarakter == '20'):
+            vanspaceavegen = 1
+        else:
+            vanspaceavegen = 0
+            line += separator
+
+        
         tokencounter = 0
         counter -= 1
         linesplit = line.split(' ')
         pattern = r'^([^{|]+)(.+)'
     
         for idx in range(len(linesplit)):
+            line_out = ''
             token = linesplit[idx]
             if (tokencounter == 0):
                 tokencounter += 1
@@ -130,7 +146,6 @@ def save_list_to_file(start, end, docname, lista):
                     file_out.write(token + separator)
                     continue
                 
-            line_out = ''
             
             szo = re.sub(pattern, r'\1', token)
             elemzesek = re.sub(pattern, r'\2', token)
@@ -172,23 +187,34 @@ def save_list_to_file(start, end, docname, lista):
                 
             else:
                 line_out = token
-                #sys.stdout.write('átmásolt: ')
-                #sys.stdout.write(token)
-                #sys.stdout.write('\n')
+                #sys.stdout.write('átmásolni: {0} ({1})\n'.format(token, token.encode('utf8').encode('hex')))
+            
             
             #sor végére ne rakjon be még egy szeparátort
-            if (idx != len(linesplit)-1):
-                line_out += separator
+            if (vanspaceavegen == 0):
+                if (idx != len(linesplit)-2):
+                    line_out += separator
+                    
+                if (idx == len(linesplit)-1):
+                    counter += 1
+                    continue
+            
+            if (vanspaceavegen == 1):
+                if (idx != len(linesplit)-1):
+                    line_out += separator
+ 
+            
+
              
             counter += len(szo)
             counter += 1
             
             #sys.stdout.write(line_out)
             
-            #sys.stdout.write('fájlba: ')
+            #sys.stdout.write('fájlba: {0} ({1})\n'.format(line_out,line_out.encode('utf8').encode('hex')))
             #sys.stdout.write(line_out)
-            #sys.stdout.write('\n')
-            #sys.stdout.write('\n')
+            #sys.stdout.write('\n***\n')
+            #sys.stdout.write('***\n')
             file_out.write(line_out)
             #soron belüli for vége 
         
@@ -197,12 +223,12 @@ def save_list_to_file(start, end, docname, lista):
         #soronkénti for vége
         
     file_in.close()
-    log_info('infile closed')
+    #log_info('infile closed')
     file_out.flush()
     file_out.close()
-    log_info('outfile closed')
+    #log_info('outfile closed')
     os.rename(utvonaluj, utvonal)
-    log_info('file renamed')
+    #log_info('file renamed')
 
     
     return response
@@ -219,21 +245,29 @@ def read_list_from_file(start, end, docname):
     startpos = int(start)
     endpos = int(end)
     szo = ''
-    log_info(type(startpos))
-    log_info(startpos)
-    log_info(type(endpos))
-    log_info(endpos)
+    #log_info(type(startpos))
+    #log_info(startpos)
+    #log_info(type(endpos))
+    #log_info(endpos)
     
     utvonal = path_join(DATA_DIR, docname + '.dat')
     
-    log_info('opening file: ' + utvonal)
+    #log_info('opening file: ' + utvonal)
     f = codecs.open(utvonal, 'r', 'utf8')
-    log_info('file opened')
+    #log_info('file opened')
     lista = []
     tokencounter = 0
 
     counter = int(1)
     for line in f:
+        vanspaceavegen = 0
+        utolsokarakter = line[len(line)-2].encode('utf8').encode('hex')
+        if (utolsokarakter == '20'):
+            vanspaceavegen = 1
+        else:
+            vanspaceavegen = 0
+            line += separator
+        
         tokencounter = 0
         #log_info('sor olvasva')
         #sor végi LF karaktert ne számoljuk!
@@ -310,7 +344,7 @@ def read_list_from_file(start, end, docname):
             counter += len(szo)
             counter += 1
         
-    log_info('file closed')
+    #log_info('file closed')
     f.close()
     
     if (len(lista)==0):
@@ -452,3 +486,4 @@ if __name__ == '__main__':
 #print "called"
 
 #set_entities(u'5', u'13', u'szemeszet', u'["egyik","m\xe1sik"]')
+set_entities(u'245', u'252', u'szemeszet', u'["egyik","másik"]')

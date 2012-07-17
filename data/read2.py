@@ -56,7 +56,8 @@ if (len(sys.argv) == 3):
 else:
     exit(2)
 
-f = codecs.open('szemeszetnemid.dat', 'r', 'utf8')
+f = codecs.open('szemeszet.dat', 'r', 'utf8')
+#f = codecs.open('szemeszetnincsspace1.dat', 'r', 'utf8')
 print "startpos", startpos
 print "endpos", endpos
 
@@ -65,13 +66,23 @@ lista = []
 tokencounter = 0
 
 for line in f:
+    print "Új sort olvastam"
+    #utolsokarakter = line[len(line)-2] + line[len(line)-1]
+    utolsokarakter = line[len(line)-2].encode('utf8').encode('hex')
+    #print "Utolsó karakter: {0}\n".format(utolsokarakter.encode('utf8').encode('hex')) 
+    if (utolsokarakter == '20'):
+        print "Szóköz van a végén"
+    else:
+        print "Nincs szóköz a végén"
+        line += ' '
     #sor végi LF karaktert ne számoljuk!
     tokencounter = 0
     counter -= 1
     linesplit = line.split(' ')
     pattern = r'^([^{|]+)(.+)'
-
-    for token in linesplit:
+    linesplit_len = len(linesplit)
+    for idx in range(linesplit_len):
+        token = linesplit[idx]
         if (tokencounter == 0):
             tokencounter += 1
             if (check_id_token(token)):
@@ -94,7 +105,7 @@ for line in f:
         #print "ellenorzes"
         szohossz = len(szo)
         endpos2 = counter + szohossz
-        print "startpos", startpos, "endpos", endpos, "counters", counter, endpos2
+        print "startpos", startpos, "endpos", endpos, "counters", counter, endpos2, token
         
         if (counter == startpos and endpos2 != endpos):
            print "startpos egyezik, de endpos nem, részleges szó?"
@@ -159,6 +170,9 @@ for line in f:
             #print "szó string:", szo, ", szó start:", counter, ", szó vége:" , counter + len(szo), ", szó hossza:", len(szo)
             #pass
 
+        if (idx>=linesplit_len-3):
+            kimenet = u'{0}/{1} token: {2}\n'.format(idx, linesplit_len, token.encode('utf8').encode('hex'))
+            sys.stdout.write(kimenet + '\n')
         
         #új sornál
         counter += len(szo)
