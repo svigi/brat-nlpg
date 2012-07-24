@@ -486,4 +486,4 @@ if __name__ == '__main__':
 #print "called"
 
 #set_entities(u'5', u'13', u'szemeszet', u'["egyik","m\xe1sik"]')
-set_entities(u'245', u'252', u'szemeszet', u'["egyik","másik"]')
+#set_entities(u'245', u'252', u'szemeszet', u'["egyik","másik"]')
